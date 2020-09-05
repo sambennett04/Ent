@@ -1,0 +1,6 @@
+{
+    "picture_storage": "/home/pi/Desktop/groot-photos",
+    "video_storage": "/home/pi/Desktop/groot-videos",
+    "video_duration": 5,
+    "camera_rotation": 180
+}
