@@ -1,0 +1,16 @@
+{
+    "watering_wait_time": 180,
+    "fertilizing_wait_time": 180,
+    "watering_relay_group": [
+        {
+            "stack": 0,
+            "relay": 1
+        }
+    ],
+    "fertilizing_relay_group": [
+        {
+            "stack": 0,
+            "relay": 2
+        }
+    ]
+}

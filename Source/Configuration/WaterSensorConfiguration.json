@@ -1,0 +1,6 @@
+{
+    "signal_upper_bound": 2535,
+    "signal_lower_bound": 1600,
+    "sensor_stack": 0,
+    "sensor_channel": 7
+}
