@@ -3,8 +3,10 @@ from json import load, dumps
 from MegaioHelper import MegaioHelper
 from WateringDecisionMaker import WateringDecisionMaker
 from SenseHatHelper import SenseHatHelper
+from TelemetryHelper import TelemetryHelper
 from time import sleep
 
+import uuid
 import os.path
 
 ACTION_NONE = 0
@@ -24,7 +26,8 @@ class Groot(object):
         self.cycles = cycles or self.__get_cycles(jsonObj) 
         self.cycleDays = self.__get_cycle_days()
         self.cycleHours = self.__get_cycle_hours()
-        self.decisionMaker = WateringDecisionMaker() 
+        self.telemetryHelper = TelemetryHelper()
+        self.decisionMaker = WateringDecisionMaker(self.telemetryHelper) 
         self.megaioHelper = MegaioHelper()
 
     def __str__(self):
@@ -91,8 +94,8 @@ class Groot(object):
 
         decision = self.decisionMaker.water()
         decisionString = self.decision_to_human_readable(decision)
-
-        print("[*]: algorithmic decision is " + str(decision) + ", " + decisionString)
+        
+        self.telemetryHelper.algoDecision = decisionString
 
         if decision == ACTION_WATER:
             self.megaioHelper.pump_water()
@@ -123,18 +126,54 @@ class Groot(object):
         if nameOfCurrentDay in self.cycleDays:
             if currentHour in self.cycleHours:
                 self.check_and_water()
-    
+
+    def get_supplemental_telemetry(self):
+
+        supplementalReading = self.sense.get_reading()
+
+        self.telemetryHelper.humidity = supplementalReading["humidity"]
+        self.telemetryHelper.pressure = supplementalReading["pressure"]
+        self.telemetryHelper.temperature = supplementalReading["temperature"]
+        self.telemetryHelper.temperatureFromHumidity = supplementalReading["temperatureFromHumidity"]
+        self.telemetryHelper.temperatureFromPressure = supplementalReading["temperatureFromPressure"]
+
     def SYS_START(self):
 
-        groot = Groot()
-        sessionLength = 0
-
+        sessionId = str(uuid.uuid4())
         self.sense.show_message("I am Groot")
 
         while(True):
-            self.sense.show_message("R#: {}".format(str(sessionLength)))
-            groot.run_schedule()
-            sessionLength += 1
+
+            runid = str(uuid.uuid4())
+            telDocument = {
+                    "sessionid": sessionId,
+                    "runid": runid,
+                    "createDate": self.telemetryHelper.get_date_string()
+                }
+
+            try:
+                
+                self.sense.show_message("R#: {}".format(runid))
+                self.get_supplemental_telemetry()
+                self.run_schedule()
+                self.telemetryHelper.write_telemetry_cloud(telDocument)
+
+            except Exception as e:
+                
+                exDoc = { "exception": str(e) }
+                self.sense.show_message("Error!")
+                telDocument.update(exDoc)
+                
+                try:
+                
+                    self.telemetryHelper.write_telemetry_cloud(telDocument)
+                
+                except Exception as ex:
+                
+                    innerExDoc = { "innerException": str(ex) }
+                    self.sense.show_message("Critical Error!")
+                    telDocument.update(innerExDoc)
+                    self.telemetryHelper.write_telemetry_local(telDocument)
 
 # Test
 

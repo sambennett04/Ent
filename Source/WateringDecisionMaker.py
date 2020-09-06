@@ -1,6 +1,7 @@
 from json import load, dumps
 from DarkSkyApiHelper import DarkSkyApiHelper
 from MegaioHelper import MegaioHelper
+from TelemetryHelper import TelemetryHelper
 from datetime import datetime
 
 import os.path
@@ -13,7 +14,7 @@ CONFIGURATION_PATH = os.path.join("Configuration","WateringDecisionMakerConfigur
 
 class WateringDecisionMaker(object):
     
-    def __init__(self):
+    def __init__(self, telemetryHelper: TelemetryHelper):
 
         jsonObj = self.__get_config()
 
@@ -23,6 +24,7 @@ class WateringDecisionMaker(object):
         self.targetWctl = self.__get_target_water_content_low(jsonObj)
         self.fertilizerDays = self.__get_fertilizer_days(jsonObj)
         self.megaioHelper = MegaioHelper()
+        self.telemetryHelper = telemetryHelper
     
     def __str__(self):
 
@@ -63,7 +65,8 @@ class WateringDecisionMaker(object):
     def check_rain(self):
 
         apiForecast = self.apiHelper.get_pct_chance_of_rain()
-
+        self.telemetryHelper.pctChanceRain = apiForecast
+        
         print("[2]: percentage chance of rain is " + str(apiForecast))
 
         shouldWater = True if apiForecast < self.targetPctRain else False
@@ -73,7 +76,8 @@ class WateringDecisionMaker(object):
     def check_water_content(self):
 
         waterContent = self.megaioHelper.get_water_content()
-
+        self.telemetryHelper.soilWaterContent = waterContent
+        
         print("[1]: percentage normalized water content is " + str(waterContent))
 
         shouldWater = True if waterContent < self.targetWctl else False
@@ -112,7 +116,8 @@ class WateringDecisionMaker(object):
 
 if __name__ == "__main__":
 
-    wdm = WateringDecisionMaker()
+    telHelper = TelemetryHelper()
+    wdm = WateringDecisionMaker(telHelper)
     waterContent = wdm.check_water_content()
     shouldFertilize = wdm.check_fertilizer()
     rain = wdm.check_rain()

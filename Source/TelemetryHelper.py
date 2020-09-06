@@ -1,4 +1,4 @@
-from CameraHelper import CameraHelper
+from CosmosHelper import CosmosHelper
 from datetime import datetime
 from json import dumps, load
 
@@ -10,58 +10,28 @@ class TelemetryHelper(object):
 
     def __init__(
         self, 
-        pressure = None, # float
-        humidity = None, # float
-        temperature = None, # float
-        temperatureFromHumidity = None, # float 
-        temperatureFromPressure = None, # float
-        waterContent = None, # float
-        pctChanceRain = None, # float
-        lowWaterContent = None, # bool
-        willNotRain = None, # bool
-        fertilize = None, # bool
-        decisionCode = None, # int
-        decisionName = None, # string
-        picturePath = None # string
+        pressure: float = None,
+        humidity: float = None,
+        temperature: float = None,
+        temperatureFromHumidity: float = None,
+        temperatureFromPressure: float = None,
+        soilWaterContent: float = None,
+        pctChanceRain: float = None,
+        algoDecision: str = None
     ): 
-        self.camera = CameraHelper()
         self.pressure = pressure or float("inf")
         self.humidity = humidity or float("inf")
         self.temperature = temperature or float("inf")
         self.temperatureFromHumidity = temperatureFromHumidity or float("inf")
         self.temperatureFromPressure = temperatureFromPressure or float("inf")
-        self.waterContent = waterContent or float("inf")
+        self.soilWaterContent = soilWaterContent or float("inf")
         self.pctChanceRain = pctChanceRain or float("inf")
-        self.lowWaterContent = lowWaterContent or False
-        self.willNotRain = willNotRain or False
-        self.fertilize = fertilize or False
-        self.decisionCode = decisionCode or -1
-        self.decisionName = decisionName or "N/A"
-        self.picturePath = picturePath or "N/A"
+        self.algoDecision = algoDecision or str()
 
         jsonObj = self.__get_configuration()
         
         self.logPath = self.__get_log_location(jsonObj)
-
-    def __enter__(self):
-
-        return self
-    
-    def __exit__(self, exc_type, exc_value, traceback):
-
-        self.pressure = None
-        self.humidity = None
-        self.temperature = None
-        self.temperatureFromHumidity = None
-        self.temperatureFromPressure = None
-        self.waterContent = None
-        self.pctChanceRain = None
-        self.lowWaterContent = None
-        self.willNotRain = None
-        self.fertilize = None
-        self.decisionCode = None
-        self.picturePath = None
-        self.logPath = None
+        self.__cosmosHelper = CosmosHelper()
 
     def __str__(self):
 
@@ -87,37 +57,58 @@ class TelemetryHelper(object):
         dateString = now.strftime("%Y-%m-%d-%H:%M:%S")
 
         return dateString
-
-    def take_picture(self):
-        
-        picturePath = self.camera.take_default_picture()
-        
-        self.picturePath = picturePath
-
-        return picturePath
     
-    def write_document(self):
+    def generate_telemetry_dict(self):
 
-        document = str(self)
+        telemetryDict = {
+            "pressure": self.pressure,
+            "humidity": self.humidity,
+            "temperature": self.temperature,
+            "temperatureFromHumidity": self.temperatureFromHumidity,
+            "temperatureFromPressure": self.temperatureFromPressure,
+            "soilWaterContent": self.soilWaterContent,
+            "pctChanceRain": self.pctChanceRain,
+            "algoDecision": self.algoDecision
+        }
+
+        return telemetryDict
+    
+    def write_telemetry_local(self, document: str = None):
+
+        document = document or str(self.generate_telemetry_dict())
 
         path = self.logPath
         path = path + "/groot-log-" + self.get_date_string() + ".json"
 
-        f = open(path, "a")
+        f = open(path, "w")
         f.write(document)
         f.close()
 
         return path
     
-    def collect_telemetry(self):
-
-        picturePath = self.take_picture()
-        print("picture available at: {}".format(picturePath))
-
-        docPath = self.write_document()
-        print("document available at: {}".format(docPath))
+    def write_telemetry_cloud(self, document: dict = None):
+        
+        document = document or {}
+        document.update(self.generate_telemetry_dict())
+        result = self.__cosmosHelper.write_document(document)
+        
+        return result
 
 if __name__ == "__main__":
 
-    with TelemetryHelper() as th:
-        th.collect_telemetry()
+    helper = TelemetryHelper(
+        pressure = 1.0,
+        humidity = 1.0,
+        temperature = 65,
+        temperatureFromHumidity = 65.0, 
+        temperatureFromPressure = 65.0,
+        soilWaterContent = 0.5,
+        pctChanceRain = 0.5,
+        algoDecision = "IT IS GOING TO RAIN"
+    )
+
+    print(str(helper))
+
+    document = {"sessionid": "unittest"}
+
+    helper.write_telemetry_cloud(document)
