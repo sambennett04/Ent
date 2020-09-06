@@ -67,8 +67,8 @@ class SenseHatHelper(object):
         reading["pressure"] = self.senseHat.get_pressure()
         reading["humidity"] = self.senseHat.get_humidity()
         reading["temperature"] = self.senseHat.get_temperature()
-        reading["temperature_from_humidity"] = self.senseHat.get_temperature_from_humidity()
-        reading["temperature_from_pressure"] = self.senseHat.get_temperature_from_pressure()
+        reading["temperatureFromHumidity"] = self.senseHat.get_temperature_from_humidity()
+        reading["temperatureFromPressure"] = self.senseHat.get_temperature_from_pressure()
 
         self.lastReading = reading
         

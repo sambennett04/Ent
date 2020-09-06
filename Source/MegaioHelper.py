@@ -205,7 +205,7 @@ if __name__ == "__main__":
     # mh.pump_water()
     # mh.fertilize_and_water()
     mh.fertilize_and_water_interleaved()
-    #mh.pump_fertilizer()
+    # mh.pump_fertilizer()
 
     wc = mh.get_water_content()
     print("the percentage of water in the soil is: " + str(wc * 100.0) + " %")

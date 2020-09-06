@@ -1,5 +1,5 @@
 {
-    "api_key": "<API_KEY>",
+    "api_key": "<DARK_SKY_API_KEY>",
     "latitude": 38.9441617,
     "longitude": -77.1439506,
     "sample_forecast_range_hours": 4

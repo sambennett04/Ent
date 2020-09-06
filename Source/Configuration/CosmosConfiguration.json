@@ -1,0 +1,7 @@
+{
+    "partition_key": "tid",
+    "database": "grootdb",
+    "container": "telemetry",
+    "endpoint": "https://grootcosmosdb00.documents.azure.com:443/",
+    "key": "<COSMOS_ACCOUNT_KEY>"
+}
