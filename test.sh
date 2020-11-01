@@ -11,17 +11,24 @@
     - run as root with the following command: sudo bash test.sh
 '
 
+cd Source
+
 # test for CosmosHelper.py
-python3 ./Source/CosmosHelper.py
+echo "\n*** TESTING CosmosHelper.py ***\n"
+python3 ./CosmosHelper.py
 
 # test for DarkSkyApiHelper.py
-python3 ./Source/DarkSkyApiHelper.py
+echo "\n*** TESTING DarkSkyApiHelper.py ***\n"
+python3 ./DarkSkyApiHelper.py
 
 # test for MegaioHelper.py
-python3 ./Source/MegaioHelper.py
+echo "\n*** TESTING MegaioHelper.py ***\n"
+python3 ./MegaioHelper.py
 
 # test for TelemetryHelper.py
-python3 ./Source/TelemetryHelper.py
+echo "\n*** TESTING TelemetryHelper.py ***\n"
+python3 ./TelemetryHelper.py
 
 # test for WateringDecisionMaker.py
-python3 ./Source/WateringDecisionMaker.py
+echo "\n*** TESTING WaterDecisionMaker.py ***\n"
+python3 ./WateringDecisionMaker.py

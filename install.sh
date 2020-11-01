@@ -19,7 +19,9 @@ pip3 install darksky_weather
 # make download directory
 mkdir ent
 cd ent
-$path = pwd
+
+# install ent
+git clone https://github.com/sambennett04/Ent.git
 
 # install megaio dependencies
 git clone https://github.com/SequentMicrosystems/megaio-rpi.git 
@@ -27,7 +29,3 @@ cd ./megaio-rpi
 sudo make install 
 cd ./python/megaio
 python3 setup.py install
-
-# install ent
-cd $path
-git clone https://github.com/sambennett04/Ent.git
