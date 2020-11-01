@@ -2,7 +2,6 @@ from datetime import datetime
 from json import load, dumps
 from MegaioHelper import MegaioHelper
 from WateringDecisionMaker import WateringDecisionMaker
-from SenseHatHelper import SenseHatHelper
 from TelemetryHelper import TelemetryHelper
 from time import sleep
 
@@ -18,8 +17,6 @@ CONFIGURATION_PATH = os.path.join("Configuration", "SystemConfiguration.json")
 class Groot(object):
 
     def __init__(self, cycles = None):
-
-        self.sense = SenseHatHelper()
         
         jsonObj = self.__get_configuration()
 
@@ -127,51 +124,30 @@ class Groot(object):
             if currentHour in self.cycleHours:
                 self.check_and_water()
 
-    def get_supplemental_telemetry(self):
-
-        supplementalReading = self.sense.get_reading()
-
-        self.telemetryHelper.humidity = supplementalReading["humidity"]
-        self.telemetryHelper.pressure = supplementalReading["pressure"]
-        self.telemetryHelper.temperature = supplementalReading["temperature"]
-        self.telemetryHelper.temperatureFromHumidity = supplementalReading["temperatureFromHumidity"]
-        self.telemetryHelper.temperatureFromPressure = supplementalReading["temperatureFromPressure"]
-
     def SYS_START(self):
 
         sessionId = str(uuid.uuid4())
-        self.sense.show_message("I am Groot")
 
         while(True):
-
             runid = str(uuid.uuid4())
             telDocument = {
-                    "sessionid": sessionId,
-                    "runid": runid,
-                    "createDate": self.telemetryHelper.get_date_string()
-                }
+                "sessionid": sessionId,
+                "runid": runid,
+                "createDate": self.telemetryHelper.get_date_string()}
 
             try:
-                
-                self.sense.show_message("R#: {}".format(runid))
-                self.get_supplemental_telemetry()
                 self.run_schedule()
                 self.telemetryHelper.write_telemetry_cloud(telDocument)
 
             except Exception as e:
-                
                 exDoc = { "exception": str(e) }
-                self.sense.show_message("Error!")
                 telDocument.update(exDoc)
                 
                 try:
-                
                     self.telemetryHelper.write_telemetry_cloud(telDocument)
                 
                 except Exception as ex:
-                
                     innerExDoc = { "innerException": str(ex) }
-                    self.sense.show_message("Critical Error!")
                     telDocument.update(innerExDoc)
                     self.telemetryHelper.write_telemetry_local(telDocument)
 

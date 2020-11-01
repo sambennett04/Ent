@@ -8,24 +8,10 @@ CONFIGURATION_PATH = os.path.join("Configuration", "TelemetryConfiguration.json"
 
 class TelemetryHelper(object):
 
-    def __init__(
-        self, 
-        pressure: float = None,
-        humidity: float = None,
-        temperature: float = None,
-        temperatureFromHumidity: float = None,
-        temperatureFromPressure: float = None,
-        soilWaterContent: float = None,
-        pctChanceRain: float = None,
-        algoDecision: str = None
-    ): 
-        self.pressure = pressure or float("inf")
-        self.humidity = humidity or float("inf")
-        self.temperature = temperature or float("inf")
-        self.temperatureFromHumidity = temperatureFromHumidity or float("inf")
-        self.temperatureFromPressure = temperatureFromPressure or float("inf")
-        self.soilWaterContent = soilWaterContent or float("inf")
-        self.pctChanceRain = pctChanceRain or float("inf")
+    def __init__(self, soilWaterContent: float = None, pctChanceRain: float = None, algoDecision: str = None): 
+
+        self.soilWaterContent = soilWaterContent or -1.0
+        self.pctChanceRain = pctChanceRain or -1.0
         self.algoDecision = algoDecision or str()
 
         jsonObj = self.__get_configuration()
@@ -61,15 +47,9 @@ class TelemetryHelper(object):
     def generate_telemetry_dict(self):
 
         telemetryDict = {
-            "pressure": self.pressure,
-            "humidity": self.humidity,
-            "temperature": self.temperature,
-            "temperatureFromHumidity": self.temperatureFromHumidity,
-            "temperatureFromPressure": self.temperatureFromPressure,
             "soilWaterContent": self.soilWaterContent,
             "pctChanceRain": self.pctChanceRain,
-            "algoDecision": self.algoDecision
-        }
+            "algoDecision": self.algoDecision}
 
         return telemetryDict
     
@@ -97,15 +77,9 @@ class TelemetryHelper(object):
 if __name__ == "__main__":
 
     helper = TelemetryHelper(
-        pressure = 1.0,
-        humidity = 1.0,
-        temperature = 65,
-        temperatureFromHumidity = 65.0, 
-        temperatureFromPressure = 65.0,
         soilWaterContent = 0.5,
         pctChanceRain = 0.5,
-        algoDecision = "IT IS GOING TO RAIN"
-    )
+        algoDecision = "IT IS GOING TO RAIN")
 
     print(str(helper))
 
