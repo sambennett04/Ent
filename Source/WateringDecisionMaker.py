@@ -98,14 +98,15 @@ class WateringDecisionMaker(object):
     def water(self):
 
         lowWaterContent = self.check_water_content()
-        print("- Garden soil has low water content? " + str(lowWaterContent))
+        wontRain = self.check_rain()
+        fertilize = self.check_fertilizer()
         
-        if lowWaterContent: 
-            wontRain = self.check_rain()
-            print("- Will not rain? " + str(wontRain))
-            if wontRain: 
-                fertilize = self.check_fertilizer()
-                print("- Scheduled to fertilize today? " + str(fertilize))
+        print("- Garden soil has low water content? " + str(lowWaterContent))
+        print("- Will not rain? " + str(wontRain))
+        print("- Scheduled to fertilize today? " + str(fertilize))
+
+        if lowWaterContent:     
+            if wontRain:
                 if fertilize: 
                     return ACTION_WATER_AND_FERTILIZE
                 return ACTION_WATER

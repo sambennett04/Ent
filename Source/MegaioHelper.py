@@ -1,7 +1,6 @@
 from json import load, dumps
 from time import sleep
 from statistics import mean
-from SenseHatHelper import SenseHatHelper
 from megaio import set_relay, get_adc
 
 import os.path
@@ -14,8 +13,6 @@ SENSOR_CONFIGURATION_PATH = os.path.join("Configuration", "WaterSensorConfigurat
 class MegaioHelper(object):
 
     def __init__(self, wateringRelayGroup = None, fertilizingRelayGroup = None, wateringWaitTime = None, fertilizingWaitTime = None, signalUpperBound = None, signalLowerBound = None, sensorStack = None, sensorChannel = None):
-
-        self.sense = SenseHatHelper()
 
         jsonObj = self.__get_megaio_config()
 
