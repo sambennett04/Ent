@@ -14,7 +14,7 @@ apt-get install git
 # install python dependencies
 pip3 install --pre azure-cosmos
 pip3 install wiringpi
-pip3 install darksky_weather
+pip3 install pyowm
 
 # make download directory
 mkdir ent

@@ -3,6 +3,7 @@ from DarkSkyApiHelper import DarkSkyApiHelper
 from MegaioHelper import MegaioHelper
 from TelemetryHelper import TelemetryHelper
 from datetime import datetime
+from OpenWeatherMapService import OpenWeatherMapService
 
 import os.path
 
@@ -14,7 +15,7 @@ CONFIGURATION_PATH = os.path.join("Configuration","WateringDecisionMakerConfigur
 
 class WateringDecisionMaker(object):
     
-    def __init__(self, telemetryHelper: TelemetryHelper):
+    def __init__(self, telemetryHelper: TelemetryHelper = None):
 
         jsonObj = self.__get_config()
 
@@ -24,7 +25,8 @@ class WateringDecisionMaker(object):
         self.targetWctl = self.__get_target_water_content_low(jsonObj)
         self.fertilizerDays = self.__get_fertilizer_days(jsonObj)
         self.megaioHelper = MegaioHelper()
-        self.telemetryHelper = telemetryHelper
+        self.telemetryHelper = telemetryHelper or TelemetryHelper()
+        self.openWeatherMapService = OpenWeatherMapService(self.telemetryHelper)
     
     def __str__(self):
 
@@ -64,12 +66,7 @@ class WateringDecisionMaker(object):
         
     def check_rain(self):
 
-        apiForecast = self.apiHelper.get_pct_chance_of_rain()
-        self.telemetryHelper.pctChanceRain = apiForecast
-        
-        print("[2]: percentage chance of rain is " + str(apiForecast))
-
-        shouldWater = True if apiForecast < self.targetPctRain else False
+        shouldWater = not self.openWeatherMapService.will_rain(self.targetPctRain)
         
         return shouldWater
         
@@ -119,15 +116,14 @@ if __name__ == "__main__":
 
     telHelper = TelemetryHelper()
     wdm = WateringDecisionMaker(telHelper)
-    waterContent = wdm.check_water_content()
-    shouldFertilize = wdm.check_fertilizer()
+    # waterContent = wdm.check_water_content()
+    # shouldFertilize = wdm.check_fertilizer()
     rain = wdm.check_rain()
 
-    waterCode = wdm.water()
+    #waterCode = wdm.water()
 
-    print(str(wdm))
-    print("water content: " + str(waterContent))
-    print("should fertilize: " + str(shouldFertilize))
-    print("rain : " + str(rain))
-    print("water Code: " + str(waterCode))
-    
+    # print(str(wdm))
+    # print("water content: " + str(waterContent))
+    # print("should fertilize: " + str(shouldFertilize))
+    print("should water : " + str(rain))
+    # print("water Code: " + str(waterCode))
