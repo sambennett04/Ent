@@ -12,12 +12,14 @@ CONFIGURATION_PATH = os.path.join("Configuration","OpenWeatherMapServiceConfigur
 class OpenWeatherMapService():
 
     def __init__(self,telemetryHelper: TelemetryHelper = None, token: str = None):
+            
+        token = token or self.__getToken()
 
         if not token:
             raise TypeError("Token can not be null or empty. \
                 Get token from: https://openweathermap.org/api")
         
-        self._mgr = OWM(token or self__getToken()).weather_manager() 
+        self._mgr = OWM(token).weather_manager() 
         self._telemetry = telemetryHelper or TelemetryHelper()
         self._pRainThreshold = 0.7
         self._long = -77.14379 # longitude of ipc

@@ -3,7 +3,7 @@ from DarkSkyApiHelper import DarkSkyApiHelper
 from MegaioHelper import MegaioHelper
 from TelemetryHelper import TelemetryHelper
 from datetime import datetime
-from OpenWeatherMapSevice import OpenWeatherMapService
+from OpenWeatherMapService import OpenWeatherMapService
 
 import os.path
 
@@ -120,11 +120,10 @@ if __name__ == "__main__":
     # shouldFertilize = wdm.check_fertilizer()
     rain = wdm.check_rain()
 
-    waterCode = wdm.water()
+    #waterCode = wdm.water()
 
     # print(str(wdm))
     # print("water content: " + str(waterContent))
     # print("should fertilize: " + str(shouldFertilize))
-    print("rain : " + str(rain))
+    print("should water : " + str(rain))
     # print("water Code: " + str(waterCode))
-    

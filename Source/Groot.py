@@ -8,7 +8,7 @@ from time import sleep
 import uuid
 import os.path
 
-ACTION_NONE = 0
+ACTION_NONE = 0 
 ACTION_RAIN = 1
 ACTION_WATER = 2
 ACTION_WATER_AND_FERTILIZE = 3
@@ -152,18 +152,8 @@ class Groot(object):
                     self.telemetryHelper.write_telemetry_local(telDocument)
 
 # Test
-
 if __name__ == "__main__":
 
     groot = Groot()
 
     groot.SYS_START()
-
-
-        
-
-
-
-    
-
-

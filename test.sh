@@ -18,8 +18,12 @@ echo "\n*** TESTING CosmosHelper.py ***\n"
 python3 ./CosmosHelper.py
 
 # test for DarkSkyApiHelper.py
-echo "\n*** TESTING DarkSkyApiHelper.py ***\n"
-python3 ./DarkSkyApiHelper.py
+# echo "\n*** TESTING DarkSkyApiHelper.py ***\n"
+# python3 ./DarkSkyApiHelper.py
+
+# test for OpenWeatherMapService.py
+echo "\n*** TESTING OpenWeatherMapService.py***\n"
+python3 ./OpenWeatherMapService.py
 
 # test for MegaioHelper.py
 echo "\n*** TESTING MegaioHelper.py ***\n"
