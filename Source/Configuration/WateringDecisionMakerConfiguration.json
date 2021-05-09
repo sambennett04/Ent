@@ -1,6 +1,0 @@
-{
-    "target_percent_chance_rain": 0.5,
-    "target_water_content_high": 0.8,
-    "target_water_content_low": 0.41,
-    "fertilizer_days": ["SATURDAY"]
-}

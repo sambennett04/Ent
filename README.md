@@ -1,2 +1,6 @@
 # Ent
-Intelligent watering system made with pure Python, Azure, and RPi. Ent is a migration of Groot.
+**TL;DR** Automated watering system made with pure Python, Azure Cosmos DB, and Raspberry Pi.
+
+## 
+
+

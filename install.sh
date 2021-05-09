@@ -1,31 +1,42 @@
-:'
-    description
-    -----------
-    - install script for the Ent project and all of its dependencies
+# set install location
+cd ~
 
-    instructions
-    ------------
-    - run as root with the following command: sudo bash install.sh
-'
+# automation hat mini setup
+curl https://get.pimoroni.com/automationhat | bash
+
+# st7735 install to run display
+curl https://get.pimoroni.com/st7735 | bash
 
 # install git
 apt-get install git
 
-# install python dependencies
+# install python modules
 pip3 install --pre azure-cosmos
-pip3 install wiringpi
 pip3 install pyowm
 
-# make download directory
-mkdir ent
-cd ent
-
-# install ent
+# collect code from git
 git clone https://github.com/sambennett04/Ent.git
 
-# install megaio dependencies
-git clone https://github.com/SequentMicrosystems/megaio-rpi.git 
-cd ./megaio-rpi
-sudo make install 
-cd ./python/megaio
-python3 setup.py install
+# set open weather map conf
+export OWM_KEY=$1
+export LONG=$2
+export LAT=$3
+
+# set cosmos db conf
+export CDB_URI=$4
+export CDB_KEY=$5
+export CDB_DATABASE=$6
+export CDB_CONTAINER=$7
+export CDB_PKEY=$8
+
+# set decision making conf
+export RAIN=$9
+export WATER_CONTENT=$10
+export FERTILIZER_DAY_ONE_NAME=$11
+export FERTILIZER_DAY_TWO_NAME=$12
+
+# configure cron job
+crontab ~/Ent/crontab
+
+# reboot to materialize configuration
+reboot
