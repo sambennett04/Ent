@@ -10,7 +10,7 @@ class DecisionService():
 		self.waterContentThreshold = os.environ.get("WATER_CONTENT")
 		self.rainThreshold = os.environ.get("RAIN")
 		self.fertilizingDays = [dayName.upper() for dayName \
-			in [os.environ.get("FERTILIZER_DAY_ONE_NAME") \
+			in [os.environ.get("FERTILIZER_DAY_ONE_NAME"), \
 			os.environ.get("FERTILIZER_DAY_TWO_NAME")] if dayName]
 	
 	def make_decision(self, waterContent: float, chanceOfRain: float) -> int:

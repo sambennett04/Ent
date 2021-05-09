@@ -12,6 +12,7 @@ apt-get install git
 
 # install python modules
 pip3 install --pre azure-cosmos
+pip3 install pytz
 pip3 install pyowm
 
 # collect code from git

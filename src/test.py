@@ -48,8 +48,8 @@ class EntTest(unittest.TestCase):
 	def test_data_service_write_document(self):
 		
 	    doc = { "id": "unit-test-key", "value": 0 }
-		result = dataService.write_document(doc)
-		self.assertTrue(result)
+	    result = dataService.write_document(doc)
+	    self.assertTrue(result)
 	
 	def test_decision_service_make_decision(self):
 		
