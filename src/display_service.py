@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from default_values import IMAGES_PATH
 
 import sys
 import time
@@ -49,7 +50,7 @@ class DisplayService():
         dia = 10
         
         # Open our background image.
-        image = Image.open("images/outputs-blank.jpg")
+        image = Image.open(IMAGES_PATH + "outputs-blank.jpg")
         draw = ImageDraw.Draw(image)
         offset = 0
 
@@ -79,7 +80,7 @@ class DisplayService():
         offset = 0
 
         # Open our background image.
-        image = Image.open("images/analog-inputs-blank.jpg")
+        image = Image.open(IMAGES_PATH + "/analog-inputs-blank.jpg")
         draw = ImageDraw.Draw(image)
 
         # Draw the text and bar for each channel in turn.

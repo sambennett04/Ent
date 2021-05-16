@@ -1,16 +1,18 @@
 from azure.cosmos import exceptions, CosmosClient, PartitionKey
-
+from default_values import CDB_URI, CDB_DATABASE, CDB_CONTAINER, CDB_PKEY, CDB_KEY
 import uuid, os
 
 class DataService():
 	
 	def __init__(self):
 		
-		self.endpoint = os.environ.get("CDB_URI")
-		self.database = os.environ.get("CDB_DATABASE")
-		self.container = os.environ.get("CDB_CONTAINER")
-		self.partitionKey = os.environ.get("CDB_PKEY")
-		self.client = CosmosClient(self.endpoint, os.environ.get("CDB_KEY"))
+		__key = os.environ.get("CDB_KEY") or CDB_KEY
+		
+		self.endpoint = os.environ.get("CDB_URI") or CDB_URI
+		self.database = os.environ.get("CDB_DATABASE") or CDB_DATABASE
+		self.container = os.environ.get("CDB_CONTAINER") or CDB_CAONTAINER
+		self.partitionKey = os.environ.get("CDB_PKEY") or CDB_PKEY
+		self.client = CosmosClient(self.endpoint, __key)
 	
 	def write_document(self, document: object) -> bool:
 		

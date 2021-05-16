@@ -1,3 +1,5 @@
+# process command line arguments
+
 # set install location
 cd ~
 
@@ -40,4 +42,4 @@ export FERTILIZER_DAY_TWO_NAME=$12
 crontab ~/Ent/crontab
 
 # reboot to materialize configuration
-reboot
+reboot 

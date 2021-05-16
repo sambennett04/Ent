@@ -1,2 +1,2 @@
-@reboot python3 ~/Ent/src/main.py
-0 0 * * * python3 ~/Ent/src/main.py
+@reboot python3 /home/pi/Ent/src/main.py
+*/3 * * * * python3 /home/pi/Ent/src/main.py

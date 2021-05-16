@@ -1,6 +1,7 @@
 from pyowm import OWM
 from pytz import UTC
 from datetime import datetime, timedelta
+from default_values import LAT, LONG, OMW_KEY
 from statistics import mean
 
 import os
@@ -8,11 +9,13 @@ import os
 class WeatherService():
 
     def __init__(self):
-
-        self.mgr = OWM(os.environ.get("OWM_KEY")).weather_manager() 
-        self.long = os.environ.get("LONG")
-        self.lat = os.environ.get("LAT")
+        
+        __key = os.environ.get("OWM_KEY") or OMW_KEY
+        
+        self.long = os.environ.get("LONG") or LONG
+        self.lat = os.environ.get("LAT") or LAT
         self.interval = "3h"
+        self.mgr = OWM(__key).weather_manager() 
     
     def chance_of_rain(self) -> float:
 
@@ -27,10 +30,3 @@ class WeatherService():
         pctChanceRain = max(fcst)
 
         return pctChanceRain
-    
-if __name__ == "__main__":
-
-    ws = WeatherService()
-    
-    print("chance of rain:", ws.chance_of_rain())
-
