@@ -8,7 +8,7 @@ Ent is deployed in production at Immanuel Presbyterian Church in McLean Virginia
 
 ## Limitations 
 
-As of xxxx the DarkSky API was aquired by Apple, so to use this code you will need a payed subscritption that you can get from this [link](https://developer.apple.com/weatherkit/get-started/) or try one of these alternative [APIs](https://medium.com/@Ari_n/8-weather-api-alternatives-now-that-darksky-is-shutting-down-42a5ac395f93)
+As of March 2020 the DarkSky API was aquired by Apple, so to use this code you will need a payed subscritption that you can get from this [link](https://developer.apple.com/weatherkit/get-started/) or try one of these alternative [APIs](https://medium.com/@Ari_n/8-weather-api-alternatives-now-that-darksky-is-shutting-down-42a5ac395f93)
 
 The MegaIO board consumes a lot of power which can cause problems if you have a garden that does not get direct sunlight most of the day( This happened to me in the early spring months). I recomend changing to a sense hat which consumes far less energy and simply requires a change of the MegaIO configuration to implement with this software. 
 
