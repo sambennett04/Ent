@@ -1,5 +1,4 @@
 from json import load, dumps
-from DarkSkyApiHelper import DarkSkyApiHelper
 from MegaioHelper import MegaioHelper
 from TelemetryHelper import TelemetryHelper
 from datetime import datetime
@@ -18,8 +17,6 @@ class WateringDecisionMaker(object):
     def __init__(self, telemetryHelper: TelemetryHelper = None):
 
         jsonObj = self.__get_config()
-
-        self.apiHelper = DarkSkyApiHelper()
         self.targetPctRain = self.__get_target_percent_chance_rain(jsonObj) 
         self.targetWcth = self.__get_target_water_content_high(jsonObj)
         self.targetWctl = self.__get_target_water_content_low(jsonObj)
